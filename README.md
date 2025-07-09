@@ -1,0 +1,1 @@
+# gitops_k8s_custom_config

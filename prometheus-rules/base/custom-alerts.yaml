@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: my-custom-alerts
+  namespace: monitoring
+spec:
+  groups:
+  - name: my-custom-group
+    rules:
+    - alert: MyCustomAlert
+      expr: up == 0
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        summary: "My custom alert"
+        description: "Instance is down for more than 10 minutes."
+    - alert: HighMemoryUsage
+      expr: container_memory_usage_bytes{container!="",container!="POD"} > 0.9 * container_spec_memory_limit_bytes
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage detected"
+        description: "Container memory usage is above 90% for more than 5 minutes."
